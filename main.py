@@ -88,10 +88,12 @@ class climateEvent:
     def propabilityCheck(self, propability):
         randNum = random.random()
         if randNum <= propability:
-            self.effects(self.change1, self.change2, self.change3, self.change4, self.eventText)
             return True
         else:
             return False
+    
+    def trigger(self):
+        self.effects(self.change1, self.change2, self.change3, self.change4, self.eventText)
 
 # Create event instances
 acidRain = climateEvent()
@@ -121,8 +123,23 @@ class Simulation:
             )
     
     def checkPropabilities(self):
+        triggered_events = []
+        
         for i in range(len(listOfEvents)):
-            listOfEvents[i].propabilityCheck(listOfEvents[i].propability)
+            # Recalculate probability based on current conditions
+            listOfEvents[i].propability = listOfEvents[i].calculatePropability(
+                listOfEvents[i].weighting1,
+                listOfEvents[i].weighting2,
+                listOfEvents[i].weighting3
+            )
+            
+            # Check if event should trigger
+            if listOfEvents[i].propabilityCheck(listOfEvents[i].propability):
+                triggered_events.append(listOfEvents[i])
+        
+        # Only trigger each event once
+        for event in triggered_events:
+            event.trigger()
 
 simulation = Simulation()
 simulation.initialise()
@@ -165,23 +182,25 @@ def starten_gui():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        # Simulation aktualisieren
-        if not weltuntergang:
-            simulation_step()
             
-            # Neue Ereignisse ins Log aufnehmen
-            for e in events:
-                events_log.append(e)
-                if len(events_log) > 10:  # nur die letzten 10 anzeigen
-                    events_log.pop(0)
-            
-            # Prüfen ob Maximalwerte überschritten
-            if ggc > MAX_GGC or globalTemp > MAX_TEMP or seaLevel > MAX_SEALEVEL or deaths > MAX_DEATHS:
-                weltuntergang = True
-                events_log.append("!!! WELTUNTERGANG !!!")
-                if len(events_log) > 10:
-                    events_log.pop(0)
+            # Enter-Taste für nächsten Schritt
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN and not weltuntergang:
+                    # Simulation aktualisieren
+                    simulation_step()
+                    
+                    # Neue Ereignisse ins Log aufnehmen
+                    for e in events:
+                        events_log.insert(0, e)  # Am Anfang einfügen statt am Ende
+                        if len(events_log) > 10:  # nur die letzten 10 anzeigen
+                            events_log.pop()  # Letztes Element entfernen statt erstes
+                    
+                    # Prüfen ob Maximalwerte überschritten
+                    if ggc > MAX_GGC or globalTemp > MAX_TEMP or seaLevel > MAX_SEALEVEL or deaths > MAX_DEATHS:
+                        weltuntergang = True
+                        events_log.insert(0, "!!! WELTUNTERGANG !!!")  # Am Anfang einfügen
+                        if len(events_log) > 10:
+                            events_log.pop()  # Letztes Element entfernen
         
         # Bildschirm weiß füllen
         screen.fill((255, 255, 255))
@@ -197,7 +216,7 @@ def starten_gui():
             example_gif.render(screen, (128 - example_gif.get_width() * 0.5, 256 - example_gif.get_height() * 0.5))
             example_gif.speed = 3  # Set the speed of the gif
         else:
-            text5 = font.render("Simulation läuft... (Fenster schließen zum Beenden)", True, (0, 0, 0))
+            text5 = font.render("Drücke ENTER für nächsten Schritt", True, (0, 0, 0))
 
         # Texte anzeigen
         screen.blit(text1, (50, 50))
@@ -214,7 +233,7 @@ def starten_gui():
             y_offset += 35
 
         pygame.display.flip()
-        clock.tick(1)  # 1 Update pro Sekunde
+        clock.tick(60)  # 60 FPS für responsive GUI
 
     pygame.quit()
 
