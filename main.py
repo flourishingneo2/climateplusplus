@@ -41,6 +41,7 @@ class climateEvent:
     propability=None
     change1=None
     change2=None
+    change3=None
 
     def effects(change1, change2, change3, eventText):
         # update the instance's parameters
@@ -55,10 +56,11 @@ class climateEvent:
         definingParameter3 *= weighting3
         ## Bitte fügt hier eure Funktion ein
 
-    def propabilityCheck(propability):
+    def propabilityCheck(propability, effects=effects, change1=change1, change2=change2, change3=change3, eventText=eventText):
         import random
         randNum = random.randint(1,100)
         if(randNum <= propability):
+            effects(change1, change2, change3, eventText)
             return True
         else:
             return False
@@ -81,7 +83,10 @@ class Simulation:
         bushFire = listOfEvents[2]
         flooding = listOfEvents[3]
         drought = listOfEvents[4]
-        permFrostBurst = listOfEvents[5]        
+        permFrostBurst = listOfEvents[5]   
+    def checkPropabilities():
+        for i in range(len(listOfEvents)):
+            listOfEvents[i].propabilityCheck(listOfEvents[i].propability)    
             
 ## Main Program
 
@@ -97,6 +102,7 @@ if(user_input == "1"):
     print("Geben sie den Anfangs-Meeresspiegel (in m ueber Normal Null): ")
     seaLevel = float(input())
     print("\n\nSimulation hat mit den folgenden Parameterm gestartet: \n Treibhausgaskonzentration: " + str(ggc) + " ppm CO2-Äquivalent \n globale Temperatur: " + str(globalTemp) + " °C \n Wasserpegel: " + str(seaLevel) + " m ueber Normal Null")
+    Simulation.initialise()
     print("\n\n--- SIMULATION LAEUFT ---\n\n")
     print("Um das Programm zu verlassen, drücken sie Escape. Einige der folgenden Ereignisse werden von ihnen verlangen mit dem Programm zu interagieren.")
     while not keyboard.is_pressed('esc'):
