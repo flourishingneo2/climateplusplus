@@ -154,6 +154,21 @@ def berechne_farbe(x, min_val, max_val):
         return (255, 0, 0)   # Rot
     return (0, 0, 0)
 
+def draw_gradient_rect(surface, color1, color2, rect):
+    """Draw a vertical gradient rectangle"""
+    for y in range(rect.height):
+        blend = y / rect.height
+        r = int(color1[0] * (1 - blend) + color2[0] * blend)
+        g = int(color1[1] * (1 - blend) + color2[1] * blend)
+        b = int(color1[2] * (1 - blend) + color2[2] * blend)
+        pygame.draw.line(surface, (r, g, b), 
+                        (rect.x, rect.y + y), 
+                        (rect.x + rect.width, rect.y + y))
+
+def draw_rounded_rect(surface, color, rect, radius=15):
+    """Draw a rounded rectangle"""
+    pygame.draw.rect(surface, color, rect, border_radius=radius)
+
 # --- Simulation Schritt ---
 def simulation_step():
     global events
@@ -169,14 +184,19 @@ def starten_gui():
     global ggc, globalTemp, seaLevel, deaths
     
     pygame.init()
-    screen = pygame.display.set_mode((900, 600))
+    screen = pygame.display.set_mode((1200, 700))
     pygame.display.set_caption("Climate++ Simulation")
     clock = pygame.time.Clock()
-    font = pygame.font.Font(None, 32)
+    
+    # Fonts
+    font_large = pygame.font.Font(None, 48)
+    font_medium = pygame.font.Font(None, 36)
+    font_small = pygame.font.Font(None, 28)
     
     running = True
-    events_log = []
+    events_log = []  # List of tuples: (event_text, is_recent)
     weltuntergang = False
+    recent_event_count = 0  # Track how many recent events we have
 
     while running:
         for event in pygame.event.get():
@@ -189,48 +209,127 @@ def starten_gui():
                     # Simulation aktualisieren
                     simulation_step()
                     
-                    # Neue Ereignisse ins Log aufnehmen
+                    # Mark all existing events as old
+                    events_log = [(text, False) for text, _ in events_log]
+                    recent_event_count = 0
+                    
+                    # Neue Ereignisse ins Log aufnehmen (marked as recent)
                     for e in events:
-                        events_log.insert(0, e)  # Am Anfang einfügen statt am Ende
-                        if len(events_log) > 10:  # nur die letzten 10 anzeigen
-                            events_log.pop()  # Letztes Element entfernen statt erstes
+                        events_log.insert(0, (e, True))  # Am Anfang einfügen mit recent=True
+                        recent_event_count += 1
+                        if len(events_log) > 15:  # mehr Platz für Events
+                            events_log.pop()  # Letztes Element entfernen
                     
                     # Prüfen ob Maximalwerte überschritten
                     if ggc > MAX_GGC or globalTemp > MAX_TEMP or seaLevel > MAX_SEALEVEL or deaths > MAX_DEATHS:
                         weltuntergang = True
-                        events_log.insert(0, "!!! WELTUNTERGANG !!!")  # Am Anfang einfügen
-                        if len(events_log) > 10:
+                        events_log.insert(0, ("!!! WELTUNTERGANG !!!", True))  # Am Anfang einfügen
+                        recent_event_count += 1
+                        if len(events_log) > 15:
                             events_log.pop()  # Letztes Element entfernen
         
-        # Bildschirm weiß füllen
-        screen.fill((255, 255, 255))
-
-        # Texte rendern
-        text1 = font.render(f"Treibhausgase: {ggc:.2f} ppm", True, berechne_farbe(ggc, 250, 40000))
-        text2 = font.render(f"Temperatur: {globalTemp:.2f} °C", True, berechne_farbe(globalTemp, 0, 5))
-        text3 = font.render(f"Meeresspiegel: {seaLevel:.2f} m", True, berechne_farbe(seaLevel, 0, 1))
-        text4 = font.render(f"Todesfälle: {deaths}", True, (0, 0, 0))
-
-        if weltuntergang:
-            text5 = font.render("Simulation gestoppt: WELTUNTERGANG!", True, (255, 0, 0))
-            example_gif.render(screen, (128 - example_gif.get_width() * 0.5, 256 - example_gif.get_height() * 0.5))
-            example_gif.speed = 3  # Set the speed of the gif
-        else:
-            text5 = font.render("Drücke ENTER für nächsten Schritt", True, (0, 0, 0))
-
-        # Texte anzeigen
-        screen.blit(text1, (50, 50))
-        screen.blit(text2, (50, 100))
-        screen.blit(text3, (50, 150))
-        screen.blit(text4, (50, 200))
-        screen.blit(text5, (50, 250))
-
+        # Hintergrund mit Gradient
+        draw_gradient_rect(screen, (15, 20, 35), (25, 35, 55), pygame.Rect(0, 0, 1200, 700))
+        
+        # Title
+        title = font_large.render("CLIMATE++ SIMULATION", True, (255, 255, 255))
+        title_shadow = font_large.render("CLIMATE++ SIMULATION", True, (0, 0, 0))
+        screen.blit(title_shadow, (52, 22))
+        screen.blit(title, (50, 20))
+        
+        # Stats Panel
+        panel_rect = pygame.Rect(30, 90, 550, 280)
+        draw_rounded_rect(screen, (35, 45, 65), panel_rect)
+        pygame.draw.rect(screen, (80, 90, 110), panel_rect, 3, border_radius=15)
+        
+        # Stats Title
+        stats_title = font_medium.render("Klimadaten", True, (200, 200, 200))
+        screen.blit(stats_title, (50, 100))
+        
+        # Individual stat boxes
+        y_pos = 150
+        
+        # Treibhausgase
+        ggc_color = berechne_farbe(ggc, 250, 40000)
+        ggc_box = pygame.Rect(50, y_pos, 500, 30)
+        draw_rounded_rect(screen, (25, 30, 45), ggc_box, 8)
+        text1 = font_small.render(f"🌫️  Treibhausgase: {ggc:.2f} ppm", True, ggc_color)
+        screen.blit(text1, (60, y_pos + 3))
+        
+        # Temperatur
+        y_pos += 40
+        temp_color = berechne_farbe(globalTemp, 0, 5)
+        temp_box = pygame.Rect(50, y_pos, 500, 30)
+        draw_rounded_rect(screen, (25, 30, 45), temp_box, 8)
+        text2 = font_small.render(f"🌡️  Temperatur: {globalTemp:.2f} °C", True, temp_color)
+        screen.blit(text2, (60, y_pos + 3))
+        
+        # Meeresspiegel
+        y_pos += 40
+        sea_color = berechne_farbe(seaLevel, 0, 1)
+        sea_box = pygame.Rect(50, y_pos, 500, 30)
+        draw_rounded_rect(screen, (25, 30, 45), sea_box, 8)
+        text3 = font_small.render(f"🌊  Meeresspiegel: {seaLevel:.2f} m", True, sea_color)
+        screen.blit(text3, (60, y_pos + 3))
+        
+        # Todesfälle
+        y_pos += 40
+        deaths_box = pygame.Rect(50, y_pos, 500, 30)
+        draw_rounded_rect(screen, (25, 30, 45), deaths_box, 8)
+        text4 = font_small.render(f"💀  Todesfälle: {deaths:,}", True, (255, 100, 100))
+        screen.blit(text4, (60, y_pos + 3))
+        
+        # Events Panel
+        events_panel_rect = pygame.Rect(30, 390, 1140, 280)
+        draw_rounded_rect(screen, (35, 45, 65), events_panel_rect)
+        pygame.draw.rect(screen, (80, 90, 110), events_panel_rect, 3, border_radius=15)
+        
+        # Events Title
+        events_title = font_medium.render("Ereignisse", True, (200, 200, 200))
+        screen.blit(events_title, (50, 400))
+        
         # Ereignisse anzeigen
-        y_offset = 300
-        for e in events_log:
-            event_text = font.render(f"- {e}", True, (200, 0, 0))
-            screen.blit(event_text, (50, y_offset))
-            y_offset += 35
+        y_offset = 450
+        for i, (e, is_recent) in enumerate(events_log):
+            if is_recent:
+                # Recent events in bright cyan/yellow
+                event_color = (255, 220, 80)
+                prefix = "▶ "
+            else:
+                # Old events in darker gray
+                event_color = (150, 150, 150)
+                prefix = "  "
+            
+            event_text = font_small.render(f"{prefix}{e}", True, event_color)
+            screen.blit(event_text, (60, y_offset))
+            y_offset += 32
+            
+            if y_offset > 640:  # Don't overflow the panel
+                break
+        
+        # Instructions/Status
+        if weltuntergang:
+            status_box = pygame.Rect(620, 90, 550, 280)
+            draw_rounded_rect(screen, (80, 20, 20), status_box)
+            pygame.draw.rect(screen, (200, 50, 50), status_box, 3, border_radius=15)
+            
+            text5 = font_medium.render("🔥 WELTUNTERGANG! 🔥", True, (255, 200, 200))
+            screen.blit(text5, (700, 180))
+            
+            try:
+                example_gif.render(screen, (800 - example_gif.get_width() * 0.5, 100))
+                example_gif.speed = 3
+            except:
+                pass
+        else:
+            status_box = pygame.Rect(620, 90, 550, 280)
+            draw_rounded_rect(screen, (35, 45, 65), status_box)
+            pygame.draw.rect(screen, (80, 90, 110), status_box, 3, border_radius=15)
+            
+            text5 = font_medium.render("⏸️  Bereit für nächsten Schritt", True, (150, 255, 150))
+            text6 = font_small.render("Drücke ENTER ⏎", True, (200, 200, 200))
+            screen.blit(text5, (640, 170))
+            screen.blit(text6, (750, 220))
 
         pygame.display.flip()
         clock.tick(60)  # 60 FPS für responsive GUI
