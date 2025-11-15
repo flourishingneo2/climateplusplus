@@ -61,7 +61,10 @@ class climateEvent:
             return True
         else:
             return False
-
+        
+acidRain = climateEvent()
+bushFire = climateEvent()
+listOfEvents = [acidRain, bushFire]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
 
 ## Main Program
 
