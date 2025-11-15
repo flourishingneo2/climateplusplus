@@ -9,21 +9,21 @@ from matplotlib.pyplot import eventplot
 ## Commented lines are optional and can be included if data is available and when the programm is more advanced.    
 
 # rcp = None                  # representative concentration pathway                  Link:
-ggc = None                  # Treibhausgaskonzentration (ppm CO2-Äquivalent)        Link:
-globalTemp = None           # globale Temperatur (°C)                               Link: https://climate.nasa.gov/vital-signs/global-temperature/  & Link: https://de.statista.com/statistik/daten/studie/1073559/umfrage/durchschnittliche-temperaturschwankungen-land-meer/#:~:text=Die%20Temperaturen%20des%20Jahres%201850%20lagen%20durchschnittlich%20rund,weltweit%20das%20w%C3%A4rmste%20Jahr%20seit%20Beginn%20der%20Aufzeichnungen.  & Link: https://www.climate.gov/news-features/understanding-climate/climate-change-global-temperature
+ggc = 0                # Treibhausgaskonzentration (ppm CO2-Äquivalent)        Link:
+globalTemp = 0.0          # globale Temperatur (°C)                               Link: https://climate.nasa.gov/vital-signs/global-temperature/  & Link: https://de.statista.com/statistik/daten/studie/1073559/umfrage/durchschnittliche-temperaturschwankungen-land-meer/#:~:text=Die%20Temperaturen%20des%20Jahres%201850%20lagen%20durchschnittlich%20rund,weltweit%20das%20w%C3%A4rmste%20Jahr%20seit%20Beginn%20der%20Aufzeichnungen.  & Link: https://www.climate.gov/news-features/understanding-climate/climate-change-global-temperature
 # snowCover = None            # Eisfläche (km²)                                       Link: 
 # avgPrec = None              # Niederschlag (mm/Jahr)                                Link: 
 # gsStrenght = None           # Golfstromstärke (Sv)                                  Link:
 # climInv = None             # Klimainvestitionen (Mrd. USD/Jahr)                    Link:
 # glacMelt = None             # Gletscherschmelze (t)                                 Link: 
-seaLevel = None             # Meeresspiegel (m)                                     Link: https://www.umweltbundesamt.de/monitoring-zur-das/handlungsfelder/kuesten-meeresschutz/km-i-2/indikator
+seaLevel = 0.0            # Meeresspiegel (m)                                     Link: https://www.umweltbundesamt.de/monitoring-zur-das/handlungsfelder/kuesten-meeresschutz/km-i-2/indikator
 # oceanHeat = None          # Ozeanwärmegehalt  (Joule)                             Link:
 # forestLoss = None         # Waldverlust   (km²/Jahr)                              Link:
 # forestArea = None           # Waldfläche (km²)                                      Link: https://www.fao.org/3/i4793e/i4793e.pdf
 # winterLength = None         # Winterlänge (Tage)                                    Link:              
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
-deaths = None                 # Todesfälle durch Klimakatastrophen
+deaths = 0                # Todesfälle durch Klimakatastrophen
 with open('events.JSON', 'r') as file:
     data = json.load(file)
 
@@ -40,30 +40,32 @@ class climateEvent:
     weighting2=None
     weighting3=None
     propability=None
-    change1=None
-    change2=None
-    change3=None
-    change4=None
+    change1=0
+    change2=0
+    change3=0
+    change4=0
 
-    def effects(change1, change2, change3, change4, eventText):
+    def effects(self, change1, change2, change3, change4, eventText, globalTemp, ggc, seaLevel, deaths):
         globalTemp += change1
         ggc += change2
         seaLevel += change3
         deaths += change4 ## höherer Faktor bei stärkeren Event
+        print("\n\n")
         print(eventText)
+        print("\n")
 
-    def normalise(min, max, value):
+    def normalise(self, min, max, value):
         return (value - min) / (max - min)
 
-    def calculatePropability(weighting1, weighting2, weighting3):
-        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3))
+    def calculatePropability(self, weighting1, weighting2, weighting3):
+        return (weighting1 * self.normalise(0, 5, globalTemp) + weighting2 * self.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3))
 
-    def propabilityCheck(propability, effects=effects, change1=change1, change2=change2, change3=change3, eventText=eventText):
+    def propabilityCheck(self, propability, effects=effects, change1=change1, change2=change2, change3=change3, change4=change4, eventText=eventText):
         import random
         randNum = random.random()
         if(randNum <= propability):
-            effects(change1, change2, change3, eventText)
-            input("Geben sie Etwas ein um fortzufahren")
+            self.effects(change1, change2, change3, change4, self.eventText, globalTemp, ggc, seaLevel, deaths)
+            input("Drücken sie Enter um fortzufahren")
             return True
         else:
             return False
@@ -89,14 +91,14 @@ class Simulation:
             listOfEvents[i].weighting2 = data[i]["parameterWeighting"]["ggc"]
             listOfEvents[i].weighting3 = data[i]["parameterWeighting"]["seaLevel"]
             # add weighting parameters
-            listOfEvents[i].calculatePropability()
-        acidRain = listOfEvents[0]
-        icebergMelt = listOfEvents[1]
-        bushFire = listOfEvents[2]
-        flooding = listOfEvents[3]
-        drought = listOfEvents[4]
-        permFrostBurst = listOfEvents[5]   
-    def checkPropabilities():
+            listOfEvents[i].propability = listOfEvents[i].calculatePropability(listOfEvents[i].weighting1, listOfEvents[i].weighting2, listOfEvents[i].weighting3)
+        # acidRain = listOfEvents[0]
+        # icebergMelt = listOfEvents[1]
+        # bushFire = listOfEvents[2]
+        # flooding = listOfEvents[3]
+        # drought = listOfEvents[4]
+        # permFrostBurst = listOfEvents[5]   
+    def checkPropabilities(self):
         for i in range(len(listOfEvents)):
             listOfEvents[i].propabilityCheck(listOfEvents[i].propability)    
             
@@ -118,12 +120,17 @@ if(user_input == "1"):
     simulation.initialise()
     print("\n\n--- SIMULATION LAEUFT ---\n\n")
     print("Um das Programm zu verlassen, drücken sie Escape. Einige der folgenden Ereignisse werden von ihnen verlangen mit dem Programm zu interagieren.")
+    i = 0
     while not keyboard.is_pressed('esc'):
         # Hier ist unser kompletter Simulationscode
         simulation.checkPropabilities()
         # Funktion die Ereignisse und Parameter abfragt und damit möglicherweise Ereignisse auslöst
+        i+=1
+        print("\n\n")
+        print("In dieser Iteration (Nr. "+str(i)+") ist nichts weiteres passiert.") 
+        print("\n")
+        input("Drücken sie Enter um fortzufahren")
         
-        print("In dieser Iteration ist noch nichts passiert.") 
         time.sleep(0.1)
         pass
     print("Simulation beendet.")
