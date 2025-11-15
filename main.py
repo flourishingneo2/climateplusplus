@@ -65,7 +65,11 @@ class climateEvent:
         
 acidRain = climateEvent()
 icebergMelt = climateEvent()
-listOfEvents = [acidRain, icebergMelt]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
+bushFire = climateEvent()
+flooding = climateEvent()
+drought = climateEvent()
+permFrostBurst = climateEvent()
+listOfEvents = [acidRain, icebergMelt, bushFire, flooding, drought, permFrostBurst]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
 
 class Simulation:
     def initialise():
@@ -73,7 +77,11 @@ class Simulation:
             listOfEvents[i].name = data[str(i)]["name"]
             listOfEvents[i].eventText = data[str(i)]["descr"]
         acidRain = listOfEvents[0]
-        icebergMelt = listOfEvents[1]        
+        icebergMelt = listOfEvents[1]
+        bushFire = listOfEvents[2]
+        flooding = listOfEvents[3]
+        drought = listOfEvents[4]
+        permFrostBurst = listOfEvents[5]        
             
 ## Main Program
 
