@@ -2,37 +2,103 @@
     {
 "0": {
             "name": "Saeureregen",
-            "Descr": "Säureregen tritt auf! Wasser und Sauerstoff in der Atmosphäre verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder. Diese Art an Regen stört die Ausgeglichenheit der Naturböden und tötet dadurch Pflanzen."
+            "Descr": "Säureregen tritt auf! Wasser und Sauerstoff in der Atmosphäre verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder. Diese Art an Regen stört die Ausgeglichenheit der Naturböden und tötet dadurch Pflanzen.",
+            "change": {
+                "deaths": 100,
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 1
+            }
         }
     },
     {
 "1": {
             "name": "Gletscherschmelzung",
-            "Descr": "Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwärmung bringt immer mehr GLetscher zum kompletten Abschmelzen. Nicht nur der Meeresspiegel steigt durch diese Schmelzen, die Gletscher gehen auch als natürliche Süßwasserreserven und Feuchteausgleich in ihren Regionen verloren."
+            "Descr": "Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwärmung bringt immer mehr GLetscher zum kompletten Abschmelzen. Nicht nur der Meeresspiegel steigt durch diese Schmelzen, die Gletscher gehen auch als natürliche Süßwasserreserven und Feuchteausgleich in ihren Regionen verloren.",
+            "change": {
+                "deaths": 5,
+                "globalTemp": 0.05,
+                "seaLevel": 0.01,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 1,
+                "ggc": 0
+            }
         }
     },
     {
 "2": {
             "name": "Waldbrand",
-            "Descr": "Starke Waldbrände breiten sich aus!"
+            "Descr": "Starke Waldbrände breiten sich aus!",
+            "change": {
+                "deaths": 50,
+                "globalTemp": 0.01,
+                "seaLevel": 0,
+                "ggc": 1
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
+                "seaLevel": 0,
+                "ggc": 0.1
+            }
         }
     },
     {
         "3": {
             "name": "Ueberschwemmung",
-            "Descr": "Überflutungen bedrohen vermehrt Menschenleben!"
+            "Descr": "Überflutungen bedrohen vermehrt Menschenleben!",
+            "change": {
+                "deaths": 200,
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 2,
+                "ggc": 0
+            }
         }
     },
     {
 "4": {
             "name": "Duerre",
-            "Descr": "Extreme Dürren sorgen für Notzustände in der ganzen Welt!"
+            "Descr": "Extreme Dürren sorgen für Notzustände in der ganzen Welt!",
+            "change": {
+                "deaths": 150,
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
+                "seaLevel": 0,
+                "ggc": 0
+            }
         }
     },
     {
 "5": {
             "name": "Permafrostbodenaufsprengungen",
-            "Descr": "Ursprünglich im Permafrost gespeicherte Klimagase treten in großen Mengen aus!"
+            "Descr": "Ursprünglich im Permafrost gespeicherte Klimagase treten in großen Mengen aus!",
+            "change": {
+                "deaths": 5,
+                "globalTemp": 0.03,
+                "seaLevel": 0,
+                "ggc": 1.5
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 0,
+                "ggc": 1
+            }
         }
     }
 ]
