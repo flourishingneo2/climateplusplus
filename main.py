@@ -63,6 +63,7 @@ class climateEvent:
         randNum = random.random()
         if(randNum <= propability):
             effects(change1, change2, change3, eventText)
+            input("Geben sie Etwas ein um fortzufahren")
             return True
         else:
             return False
@@ -113,12 +114,13 @@ if(user_input == "1"):
     print("Geben sie den Anfangs-Meeresspiegel (in m ueber Normal Null): ")
     seaLevel = float(input())
     print("\n\nSimulation hat mit den folgenden Parameterm gestartet: \n Treibhausgaskonzentration: " + str(ggc) + " ppm CO2-Äquivalent \n globale Temperatur: " + str(globalTemp) + " °C \n Wasserpegel: " + str(seaLevel) + " m ueber Normal Null")
-    Simulation.initialise()
+    simulation = Simulation()
+    simulation.initialise()
     print("\n\n--- SIMULATION LAEUFT ---\n\n")
     print("Um das Programm zu verlassen, drücken sie Escape. Einige der folgenden Ereignisse werden von ihnen verlangen mit dem Programm zu interagieren.")
     while not keyboard.is_pressed('esc'):
         # Hier ist unser kompletter Simulationscode
-
+        simulation.checkPropabilities()
         # Funktion die Ereignisse und Parameter abfragt und damit möglicherweise Ereignisse auslöst
         
         print("In dieser Iteration ist noch nichts passiert.") 
