@@ -1,6 +1,9 @@
 ## Imports
 import keyboard
 import time
+import json
+
+from matplotlib.pyplot import eventplot
 
 ## Climate Data Variables
 ## Commented lines are optional and can be included if data is available and when the programm is more advanced.    
@@ -20,6 +23,44 @@ seaLevel = None             # Meeresspiegel (m)                                 
 # winterLength = None         # Winterlänge (Tage)                                    Link:              
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
+
+
+## Classes
+
+class climateEvent:
+    name=None
+    # indexNumber=None
+    eventText=None
+    changingParameter1=None
+    changingParameter2=None
+    changingParameter3=None
+    weighting1=None
+    weighting2=None
+    weighting3=None
+    propability=None
+    change1=None
+    change2=None
+
+    def effects(change1, change2, change3, eventText):
+        # update the instance's parameters
+        changingParameter1 += change1
+        changingParameter2 += change2
+        changingParameter3 += change3
+        print(eventText)
+
+    def calculatePropability(definingParameter1, definingParameter2, definingParameter3, weighting1, weighting2, weighting3):
+        definingParameter1 *= weighting1
+        definingParameter2 *= weighting2
+        definingParameter3 *= weighting3
+        ## Bitte fügt hier eure Funktion ein
+
+    def propabilityCheck(propability):
+        import random
+        randNum = random.randint(1,100)
+        if(randNum <= propability):
+            return True
+        else:
+            return False
 
 
 ## Main Program
