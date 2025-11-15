@@ -1,0 +1,32 @@
+[
+    {
+        "Saeureregen": {
+            "Descr": "Säureregen tritt auf! Wasser und Sauerstoff in der Atmosphäre verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder. Diese Art an Regen stört die Ausgeglichenheit der Naturböden und tötet dadurch Pflanzen."
+        }
+    },
+    {
+        "Gletscherschmelze": {
+            "Descr": "Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwärmung bringt immer mehr GLetscher zum kompletten Abschmelzen. Nicht nur der Meeresspiegel steigt durch diese Schmelzen, die Gletscher gehen auch als natürliche Süßwasserreserven und Feuchteausgleich in ihren Regionen verloren."
+        }
+    },
+    {
+        "Waldbrand": {
+            "Descr": "Starke Waldbrände breiten sich aus!"
+        }
+    },
+    {
+        "Ueberflutung": {
+            "Descr": "Überflutungen bedrohen vermehrt Menschenleben!"
+        }
+    },
+    {
+        "Duerre": {
+            "Descr": "Extreme Dürren sorgen für Notzustände in der ganzen Welt!"
+        }
+    },
+    {
+        "Permafrostbodenaufsprenungen": {
+            "Descr": "Ursprünglich im Permafrost gespeicherte Klimagase treten in großen Mengen aus!"
+        }
+    }
+]
