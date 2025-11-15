@@ -24,7 +24,7 @@ seaLevel = None             # Meeresspiegel (m)                                 
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
 deaths = None                 # Todesfälle durch Klimakatastrophen
-with open('events.JSON', 'rb') as file:
+with open('events.JSON', 'r') as file:
     data = json.load(file)
 
 ## Classes
@@ -79,15 +79,15 @@ listOfEvents = [acidRain, icebergMelt, bushFire, flooding, drought, permFrostBur
 class Simulation:
     def initialise(self):
         for i in range(len(listOfEvents)):
-            listOfEvents[i].name = data[str(i)]["name"]
-            listOfEvents[i].eventText = data[str(i)]["descr"]
-            listOfEvents[i].change1 = data[str(i)]["change"]["globalTemp"]
-            listOfEvents[i].change2 = data[str(i)]["change"]["seaLevel"]
-            listOfEvents[i].change3 = data[str(i)]["change"]["ggc"]
-            listOfEvents[i].change4 = data[str(i)]["change"]["deaths"]
-            listOfEvents[i].weighting1 = data[str(i)]["parameterWeighting"]["globalTemp"]
-            listOfEvents[i].weighting2 = data[str(i)]["parameterWeighting"]["ggc"]
-            listOfEvents[i].weighting3 = data[str(i)]["parameterWeighting"]["seaLevel"]
+            listOfEvents[i].name = data[i]["name"]
+            listOfEvents[i].eventText = data[i]["descr"]
+            listOfEvents[i].change1 = data[i]["change"]["globalTemp"]
+            listOfEvents[i].change2 = data[i]["change"]["seaLevel"]
+            listOfEvents[i].change3 = data[i]["change"]["ggc"]
+            listOfEvents[i].change4 = data[i]["change"]["deaths"]
+            listOfEvents[i].weighting1 = data[i]["parameterWeighting"]["globalTemp"]
+            listOfEvents[i].weighting2 = data[i]["parameterWeighting"]["ggc"]
+            listOfEvents[i].weighting3 = data[i]["parameterWeighting"]["seaLevel"]
             # add weighting parameters
             listOfEvents[i].calculatePropability()
         acidRain = listOfEvents[0]
