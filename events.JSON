@@ -8,6 +8,11 @@
                 "globalTemp": 0,
                 "seaLevel": 0,
                 "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 1
             }
         }
     },
@@ -19,6 +24,11 @@
                 "deaths": 5,
                 "globalTemp": 0.05,
                 "seaLevel": 0.01,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 1,
                 "ggc": 0
             }
         }
@@ -32,6 +42,11 @@
                 "globalTemp": 0.01,
                 "seaLevel": 0,
                 "ggc": 1
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
+                "seaLevel": 0,
+                "ggc": 0.1
             }
         }
     },
@@ -44,6 +59,11 @@
                 "globalTemp": 0,
                 "seaLevel": 0,
                 "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 2,
+                "ggc": 0
             }
         }
     },
@@ -54,6 +74,11 @@
             "change": {
                 "deaths": 150,
                 "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
                 "seaLevel": 0,
                 "ggc": 0
             }
@@ -68,6 +93,11 @@
                 "globalTemp": 0.03,
                 "seaLevel": 0,
                 "ggc": 1.5
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 0,
+                "ggc": 1
             }
         }
     }

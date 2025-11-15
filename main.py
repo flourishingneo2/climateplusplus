@@ -55,7 +55,7 @@ class climateEvent:
         return (value - min) / (max - min)
 
     def calculatePropability(weighting1, weighting2, weighting3):
-        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3)) / (weighting1 + weighting2 + weighting3)
+        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3))
 
     def propabilityCheck(propability, effects=effects, change1=change1, change2=change2, change3=change3, eventText=eventText):
         import random
