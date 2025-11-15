@@ -23,6 +23,7 @@ seaLevel = None             # Meeresspiegel (m)                                 
 # winterLength = None         # Winterlänge (Tage)                                    Link:              
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
+deaths = None                 # Todesfälle durch Klimakatastrophen
 with open('events.JSON', 'r') as file:
     data = json.loads(file)
 
@@ -43,22 +44,22 @@ class climateEvent:
     change2=None
     change3=None
 
-    def effects(change1, change2, change3, eventText):
-        # update the instance's parameters
+    def effects(change1, change2, change3, kills, eventText):
         changingParameter1 += change1
         changingParameter2 += change2
         changingParameter3 += change3
+        deaths += kills
         print(eventText)
 
-    def calculatePropability(definingParameter1, definingParameter2, definingParameter3, weighting1, weighting2, weighting3):
-        definingParameter1 *= weighting1
-        definingParameter2 *= weighting2
-        definingParameter3 *= weighting3
-        ## Bitte fügt hier eure Funktion ein
+    def normalise(min, max, value):
+        return (value - min) / (max - min)
+
+    def calculatePropability(weighting1, weighting2, weighting3):
+        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3)) / (weighting1 + weighting2 + weighting3)
 
     def propabilityCheck(propability, effects=effects, change1=change1, change2=change2, change3=change3, eventText=eventText):
         import random
-        randNum = random.randint(1,100)
+        randNum = random.random()
         if(randNum <= propability):
             effects(change1, change2, change3, eventText)
             return True
@@ -78,6 +79,8 @@ class Simulation:
         for i in range(len(listOfEvents)):
             listOfEvents[i].name = data[str(i)]["name"]
             listOfEvents[i].eventText = data[str(i)]["descr"]
+            # add weighting parameters
+            listOfEvents[i].calculatePropability()
         acidRain = listOfEvents[0]
         icebergMelt = listOfEvents[1]
         bushFire = listOfEvents[2]
