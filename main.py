@@ -45,9 +45,9 @@ class climateEvent:
     change3=None
 
     def effects(change1, change2, change3, kills, eventText):
-        changingParameter1 += change1
-        changingParameter2 += change2
-        changingParameter3 += change3
+        globalTemp += change1
+        ggc += change2
+        seaLevel += change3
         deaths += kills
         print(eventText)
 
