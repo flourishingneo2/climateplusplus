@@ -24,8 +24,8 @@ seaLevel = None             # Meeresspiegel (m)                                 
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
 deaths = None                 # Todesfälle durch Klimakatastrophen
-with open('events.JSON', 'r') as file:
-    data = json.loads(file)
+with open('events.JSON', 'rb') as file:
+    data = json.load(file)
 
 ## Classes
 
@@ -77,7 +77,7 @@ permFrostBurst = climateEvent()
 listOfEvents = [acidRain, icebergMelt, bushFire, flooding, drought, permFrostBurst]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
 
 class Simulation:
-    def initialise():
+    def initialise(self):
         for i in range(len(listOfEvents)):
             listOfEvents[i].name = data[str(i)]["name"]
             listOfEvents[i].eventText = data[str(i)]["descr"]
