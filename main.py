@@ -43,19 +43,20 @@ class climateEvent:
     change1=None
     change2=None
     change3=None
+    change4=None
 
-    def effects(change1, change2, change3, kills, eventText):
+    def effects(change1, change2, change3, change4, eventText):
         globalTemp += change1
         ggc += change2
         seaLevel += change3
-        deaths += kills
+        deaths += change4 ## höherer Faktor bei stärkeren Event
         print(eventText)
 
     def normalise(min, max, value):
         return (value - min) / (max - min)
 
     def calculatePropability(weighting1, weighting2, weighting3):
-        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3)) / (weighting1 + weighting2 + weighting3)
+        return (weighting1 * climateEvent.normalise(0, 5, globalTemp) + weighting2 * climateEvent.normalise(250, 40000, ggc) + weighting3 * seaLevel / (weighting1 + weighting2 + weighting3))
 
     def propabilityCheck(propability, effects=effects, change1=change1, change2=change2, change3=change3, eventText=eventText):
         import random
@@ -79,6 +80,13 @@ class Simulation:
         for i in range(len(listOfEvents)):
             listOfEvents[i].name = data[str(i)]["name"]
             listOfEvents[i].eventText = data[str(i)]["descr"]
+            listOfEvents[i].change1 = data[str(i)]["change"]["globalTemp"]
+            listOfEvents[i].change2 = data[str(i)]["change"]["seaLevel"]
+            listOfEvents[i].change3 = data[str(i)]["change"]["ggc"]
+            listOfEvents[i].change4 = data[str(i)]["change"]["deaths"]
+            listOfEvents[i].weighting1 = data[str(i)]["parameterWeighting"]["globalTemp"]
+            listOfEvents[i].weighting2 = data[str(i)]["parameterWeighting"]["ggc"]
+            listOfEvents[i].weighting3 = data[str(i)]["parameterWeighting"]["seaLevel"]
             # add weighting parameters
             listOfEvents[i].calculatePropability()
         acidRain = listOfEvents[0]
