@@ -23,7 +23,8 @@ seaLevel = None             # Meeresspiegel (m)                                 
 # winterLength = None         # Winterlänge (Tage)                                    Link:              
 # permafrostDepth = None      # Permafrost-Tiefe (m)                                  Link:     
 # energyMix = None            # Energie-Mix (% Erneuerbare Energien)                  Link:
-
+with open('events.JSON', 'r') as file:
+    data = json.loads(file)
 
 ## Classes
 
@@ -63,9 +64,17 @@ class climateEvent:
             return False
         
 acidRain = climateEvent()
-bushFire = climateEvent()
-listOfEvents = [acidRain, bushFire]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
+icebergMelt = climateEvent()
+listOfEvents = [acidRain, icebergMelt]  # Durch diese Liste wird später durchiteriert um die Ereignisse zu definieren
 
+class Simulation:
+    def initialise():
+        for i in range(len(listOfEvents)):
+            listOfEvents[i].name = data[str(i)]["name"]
+            listOfEvents[i].eventText = data[str(i)]["descr"]
+        acidRain = listOfEvents[0]
+        icebergMelt = listOfEvents[1]        
+            
 ## Main Program
 
 print("CLIMATE++\n \n \n Wählen Sie eine Option aus indem sie die zugehörige Nummer eingeben: \n 1. Simulation starten\n 2. Programm verlassen")
