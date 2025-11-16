@@ -41,6 +41,8 @@ class climateEvent:
         self.change2 = 0
         self.change3 = 0
         self.change4 = 0
+        self.eventCount = 0
+        self.theStack = []
 
     def effects(self, change1, change2, change3, change4, eventText):
         global globalTemp, ggc, seaLevel, deaths, events
@@ -54,18 +56,7 @@ class climateEvent:
         print(eventText)
         print("\n")
         
-        if self.name == "Saeureregen":
-            events.append("Säureregen tritt auf! Wasser und Sauerstoff in der Atmosphäre verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder.")
-        elif self.name == "Gletcherschmelzung":
-            events.append("Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwärmung bringt immer mehr Gletscher zum kompletten Abschmelzen.")
-        elif self.name == "Waldbrand":
-            events.append("Starke Waldbrände breiten sich aus!")
-        elif self.name == "Ueberschwemmung":
-            events.append("Überflutungen bedrohen vermehrt Menschenleben!")
-        elif self.name == "Duerre":
-            events.append("Extreme Dürren sorgen für Notzustände in der ganzen Welt!")
-        elif self.name == "Permafrostbodenaufsprengungen":
-            events.append("Ursprünglich im Permafrost gespeicherte Klimagase treten in großen Mengen aus!")
+        events.append(eventText+" ("+str(self.eventCount)+")")
 
     def normalise(self, min_val, max_val, value):
         if max_val == min_val:
@@ -134,7 +125,9 @@ class Simulation:
                 listOfEvents[i].weighting3
                 )
                 if listOfEvents[i].propabilityCheck(listOfEvents[i].propability):
-                    triggered_events.append(listOfEvents[i])
+                    listOfEvents[i].theStack.append(listOfEvents[i])
+                    listOfEvents[i].eventCount += 1
+                    
                 else:
                     break
             # # Recalculate probability based on current conditions
@@ -143,11 +136,11 @@ class Simulation:
             #     listOfEvents[i].weighting2,
             #     listOfEvents[i].weighting3
             # )
-            
-            # Check if event should trigger
-            
-        
-        # Only trigger each event once
+            if len(listOfEvents[i].theStack) > 0:
+                triggered_events.append(listOfEvents[i].theStack[-1])
+            listOfEvents[i].theStack.clear()
+
+
         for event in triggered_events:
             event.trigger()
 
