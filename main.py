@@ -305,7 +305,7 @@ def starten_gui():
             
             event_text = font_small.render(f"{prefix}{e}", True, event_color)
             screen.blit(event_text, (60, y_offset))
-            y_offset += 32
+            y_offset += 64
             
             if y_offset > 640:  # Don't overflow the panel
                 break
