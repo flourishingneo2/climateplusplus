@@ -329,10 +329,10 @@ def starten_gui():
         screen.blit(events_title, (50, 400))
         
         # Ereignisse anzeigen mit dynamischem Zeilenabstand
-        y_offset = 450
+        y_offset = 440
         max_event_width = 1080  # Maximum width for event text (reduced to ensure padding)
-        line_height = 25  # Height per line of text
-        base_spacing = 12  # Extra spacing between events
+        line_height = 18  # Height per line of text
+        base_spacing = 6  # Extra spacing between events
         panel_bottom = 650  # Bottom boundary of the events panel
         
         for i, (e, is_recent) in enumerate(events_log):
