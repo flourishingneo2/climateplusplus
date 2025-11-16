@@ -4,7 +4,7 @@
             "name": "Saeureregen",
             "descr": "Saeureregen",
             "change": {
-                "deaths": 100,
+                "deaths": [0, 50],
                 "globalTemp": 0,
                 "seaLevel": 0,
                 "ggc": 0
@@ -21,9 +21,9 @@
             "name": "Gletscherschmelzung",
             "descr": "Gletscherschmelzung",
             "change": {
-                "deaths": 5,
-                "globalTemp": 0.05,
-                "seaLevel": 0.01,
+                "deaths": [0, 20],
+                "globalTemp": [0.01, 0.05],
+                "seaLevel": [0.001, 0.01],
                 "ggc": 0
             },
             "parameterWeighting": {
@@ -38,10 +38,10 @@
             "name": "Waldbrand",
             "descr": "Waldbrand",
             "change": {
-                "deaths": 50,
-                "globalTemp": 0.01,
+                "deaths": [1, 50000],
+                "globalTemp": [0.005, 0.2],
                 "seaLevel": 0,
-                "ggc": 1
+                "ggc": [1, 5]
             },
             "parameterWeighting": {
                 "globalTemp": 1,
@@ -53,9 +53,9 @@
     {
    
             "name": "Ueberschwemmung",
-            "descr": "Waldbrand",
+            "descr": "Ueberschwemmung",
             "change": {
-                "deaths": 200,
+                "deaths": [50, 600],
                 "globalTemp": 0,
                 "seaLevel": 0,
                 "ggc": 0
@@ -72,7 +72,7 @@
             "name": "Duerre",
             "descr": "Duerre",
             "change": {
-                "deaths": 150,
+                "deaths": [20000, 100000],
                 "globalTemp": 0,
                 "seaLevel": 0,
                 "ggc": 0
@@ -89,10 +89,10 @@
             "name": "Permafrostbodenaufsprengungen",
             "descr": "Permafrostbodenaufsprengungen",
             "change": {
-                "deaths": 5,
-                "globalTemp": 0.03,
+                "deaths": [1, 15],
+                "globalTemp": [0.004, 0.02],
                 "seaLevel": 0,
-                "ggc": 1.5
+                "ggc": [0.5, 6]
             },
             "parameterWeighting": {
                 "globalTemp": 2,
