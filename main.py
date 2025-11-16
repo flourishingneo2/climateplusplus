@@ -11,6 +11,7 @@ ggc = 417                # Treibhausgaskonzentration (ppm CO2-Äquivalent)
 globalTemp = 1.6         # globale Temperatur (°C)
 seaLevel = 0.1           # Meeresspiegel (m)
 deaths = 0               # Todesfälle durch Klimakatastrophen
+years = 0                # Jahre vergangen
 MAX_GGC = 40000          # ppm
 MAX_TEMP = 5             # °C
 MAX_SEALEVEL = 1         # m
@@ -44,13 +45,32 @@ class climateEvent:
         self.eventCount = 0
         self.theStack = []
 
+    def get_random_value(self, change_value):
+        """Get a random value from array range or return 0 if value is 0"""
+        if isinstance(change_value, list):
+            # If it's an array, return random value between min and max
+            return random.uniform(change_value[0], change_value[1])
+        elif change_value == 0:
+            # If it's 0, return 0 (no change)
+            return 0
+        else:
+            # If it's a single value, return it as is
+            return change_value
+
     def effects(self, change1, change2, change3, change4, eventText):
         global globalTemp, ggc, seaLevel, deaths, events
         
-        globalTemp += change1
-        ggc += change2
-        seaLevel += change3
-        deaths += change4
+        # Get random values for each parameter
+        actual_change1 = self.get_random_value(change1)
+        actual_change2 = self.get_random_value(change2)
+        actual_change3 = self.get_random_value(change3)
+        actual_change4 = self.get_random_value(change4)
+        
+        # Apply changes
+        globalTemp += actual_change1
+        ggc += actual_change2
+        seaLevel += actual_change3
+        deaths += int(actual_change4)
         
         print("\n\n")
         print(eventText)
@@ -210,17 +230,18 @@ def wrap_text(text, font, max_width):
 
 # --- Simulation Schritt ---
 def simulation_step():
-    global events
+    global events, years
     events.clear()  # Clear events from previous iteration
     simulation.checkPropabilities()
     
     # Only add "nothing happened" if no events were added
     if len(events) == 0:
-        events.append("In dieser Iteration ist nichts weiteres passiert.")
+        events.append("In diesem Jahr ist nichts passiert.")
+    years += 1
 
 # --- GUI starten ---
 def starten_gui():
-    global ggc, globalTemp, seaLevel, deaths
+    global ggc, globalTemp, seaLevel, deaths, years
     
     pygame.init()
     screen = pygame.display.set_mode((1200, 700))
@@ -278,7 +299,7 @@ def starten_gui():
         screen.blit(title, (50, 20))
         
         # Stats Panel
-        panel_rect = pygame.Rect(30, 90, 550, 280)
+        panel_rect = pygame.Rect(30, 90, 550, 320)
         draw_rounded_rect(screen, (35, 45, 65), panel_rect)
         pygame.draw.rect(screen, (80, 90, 110), panel_rect, 3, border_radius=15)
         
@@ -318,18 +339,25 @@ def starten_gui():
         draw_rounded_rect(screen, (25, 30, 45), deaths_box, 8)
         text4 = font_small.render(f"Todesfälle: {deaths:,}", True, (255, 100, 100))
         screen.blit(text4, (60, y_pos + 3))
+
+        # Jahre
+        y_pos += 40
+        year_box = pygame.Rect(50, y_pos, 500, 30)
+        draw_rounded_rect(screen, (25, 30, 45), year_box, 8)
+        text_years = font_small.render(f"Jahre vergangen: {years:,}", True, (150, 200, 255))
+        screen.blit(text_years, (60, y_pos + 3))
         
         # Events Panel
-        events_panel_rect = pygame.Rect(30, 390, 1140, 280)
+        events_panel_rect = pygame.Rect(30, 430, 1140, 240)
         draw_rounded_rect(screen, (35, 45, 65), events_panel_rect)
         pygame.draw.rect(screen, (80, 90, 110), events_panel_rect, 3, border_radius=15)
         
         # Events Title
         events_title = font_medium.render("Ereignisse", True, (200, 200, 200))
-        screen.blit(events_title, (50, 400))
+        screen.blit(events_title, (50, 440))
         
         # Ereignisse anzeigen mit dynamischem Zeilenabstand
-        y_offset = 440
+        y_offset = 480
         max_event_width = 1080  # Maximum width for event text (reduced to ensure padding)
         line_height = 18  # Height per line of text
         base_spacing = 6  # Extra spacing between events
@@ -377,27 +405,27 @@ def starten_gui():
         
         # Instructions/Status
         if weltuntergang:
-            status_box = pygame.Rect(620, 90, 550, 280)
+            status_box = pygame.Rect(620, 90, 550, 320)
             draw_rounded_rect(screen, (80, 20, 20), status_box)
             pygame.draw.rect(screen, (200, 50, 50), status_box, 3, border_radius=15)
             
             text5 = font_medium.render("WELTUNTERGANG!", True, (255, 200, 200))
-            screen.blit(text5, (700, 180))
+            screen.blit(text5, (700, 220))
             
             try:
-                example_gif.render(screen, (800 - example_gif.get_width() * 0.5, 100))
+                example_gif.render(screen, (800 - example_gif.get_width() * 0.5, 120))
                 example_gif.speed = 3
             except:
                 pass
         else:
-            status_box = pygame.Rect(620, 90, 550, 280)
+            status_box = pygame.Rect(620, 90, 550, 320)
             draw_rounded_rect(screen, (35, 45, 65), status_box)
             pygame.draw.rect(screen, (80, 90, 110), status_box, 3, border_radius=15)
             
             text5 = font_medium.render("Bereit für nächsten Schritt", True, (150, 255, 150))
             text6 = font_small.render("Drücke ENTER ", True, (200, 200, 200))
-            screen.blit(text5, (640, 170))
-            screen.blit(text6, (750, 220))
+            screen.blit(text5, (640, 210))
+            screen.blit(text6, (750, 260))
 
         pygame.display.flip()
         clock.tick(60)  # 60 FPS für responsive GUI

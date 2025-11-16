@@ -4,90 +4,91 @@
     "name": "Saeureregen",
     "descr": "Saeureregen tritt auf! Wasser und Sauerstoff in der Atmosphaere verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder. Diese Art an Regen stoert die Ausgeglichenheit der Naturboeden \nund toetet dadurch Pflanzen.",
     "change": {
-        "deaths": 100,
-        "globalTemp": 0,
-        "seaLevel": 0,
-        "ggc": 0
-    },
-    "parameterWeighting": {
-        "globalTemp": 0,
-        "seaLevel": 0,
-        "ggc": 1
-    }
+                "deaths": [0, 50],
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 1
+            }
+        
 },
 {
     "name": "Gletscherschmelzung",
     "descr": "Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwaermung bringt immer mehr Gletscher zum kompletten Abschmelzen. Nicht nur der Meeresspiegel steigt durch diese Schmelzen, die Gletscher gehen auch als natuerliche Suesswasserreserven und Feuchteausgleich in ihren Regionen verloren.",
     "change": {
-        "deaths": 5,
-        "globalTemp": 0.05,
-        "seaLevel": 0.01,
-        "ggc": 0
-    },
-    "parameterWeighting": {
-        "globalTemp": 2,
-        "seaLevel": 1,
-        "ggc": 0
-    }
+                "deaths": [0, 20],
+                "globalTemp": [0.01, 0.05],
+                "seaLevel": [0.001, 0.01],
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 1,
+                "ggc": 0
+            }
 },
 {
     "name": "Waldbrand",
     "descr": "Starke Waldbraende breiten sich aus! Die stetig steigenden Temperaturen trocknen ganze Waelder aus. Schon ein kleiner Funke kann dort alles entzuenden. Das CO2, das in den Baeumen gespeichert war, wird frei und Tiere sterben und verlieren ihr Zuhause.",
     "change": {
-        "deaths": 50,
-        "globalTemp": 0.01,
-        "seaLevel": 0,
-        "ggc": 1
-    },
-    "parameterWeighting": {
-        "globalTemp": 1,
-        "seaLevel": 0,
-        "ggc": 0.1
-    }
+                "deaths": [1, 50000],
+                "globalTemp": [0.005, 0.2],
+                "seaLevel": 0,
+                "ggc": [1, 5]
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
+                "seaLevel": 0,
+                "ggc": 0.1
+            }
 },
 {
     "name": "Ueberschwemmung",
     "descr": "Ueberflutungen bedrohen vermehrt Menschenleben! Durch die steigenden Meeresspiegel und mehr Extremwetterereignisse sorgen fuer das starke Anschwellen von Fluessen. Es kommt zu Ueberflutungen, die die Lebensraeume von Mensch und Tier beschaedigen oder gar komplett zerstoeren. Es kommt zu Oekosystemverlusten.",
     "change": {
-        "deaths": 200,
-        "globalTemp": 0,
-        "seaLevel": 0,
-        "ggc": 0
-    },
-    "parameterWeighting": {
-        "globalTemp": 0,
-        "seaLevel": 2,
-        "ggc": 0
-    }
+                "deaths": [50, 600],
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 0,
+                "seaLevel": 2,
+                "ggc": 0
+            }
 },
 {
     "name": "Duerre",
     "descr": "Extreme Duerren sorgen fuer Notzustaende in der ganzen Welt! Es kommt zu Ernteausfaellen, Desertifizierung und vermehrten hitzebedingten Krankheitsbildern",
     "change": {
-        "deaths": 150,
-        "globalTemp": 0,
-        "seaLevel": 0,
-        "ggc": 0
-    },
-    "parameterWeighting": {
-        "globalTemp": 1,
-        "seaLevel": 0,
-        "ggc": 0
-    }
+                "deaths": [20000, 100000],
+                "globalTemp": 0,
+                "seaLevel": 0,
+                "ggc": 0
+            },
+            "parameterWeighting": {
+                "globalTemp": 1,
+                "seaLevel": 0,
+                "ggc": 0
+            }
 },
 {
     "name": "Permafrostbodenaufsprengungen",
     "descr": "Urspruenglich im Permafrost gespeicherte Klimagase treten in grossen Mengen aus! Die Hitze der Welt wandert nun auch hoch bis zu den Regionen des Permafrosts. Die freiwerdenden Gase kurbeln nicht nur\nweiter den Klimawandel an, die Abschmelzungen und Aufsprengungen zerstoeren auch die Boeden und Kuesten dort durch z.B. Erosion.",
     "change": {
-        "deaths": 5,
-        "globalTemp": 0.03,
-        "seaLevel": 0,
-        "ggc": 1.5
-    },
-    "parameterWeighting": {
-        "globalTemp": 2,
-        "seaLevel": 0,
-        "ggc": 1
-    }
+                "deaths": [1, 15],
+                "globalTemp": [0.004, 0.02],
+                "seaLevel": 0,
+                "ggc": [0.5, 6]
+            },
+            "parameterWeighting": {
+                "globalTemp": 2,
+                "seaLevel": 0,
+                "ggc": 1
+            }
 }
 ]
