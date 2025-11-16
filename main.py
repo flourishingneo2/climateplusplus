@@ -256,7 +256,7 @@ def starten_gui():
         ggc_color = berechne_farbe(ggc, 250, 40000)
         ggc_box = pygame.Rect(50, y_pos, 500, 30)
         draw_rounded_rect(screen, (25, 30, 45), ggc_box, 8)
-        text1 = font_small.render(f"🌫️  Treibhausgase: {ggc:.2f} ppm", True, ggc_color)
+        text1 = font_small.render(f"Treibhausgase: {ggc:.2f} ppm", True, ggc_color)
         screen.blit(text1, (60, y_pos + 3))
         
         # Temperatur
@@ -264,7 +264,7 @@ def starten_gui():
         temp_color = berechne_farbe(globalTemp, 0, 5)
         temp_box = pygame.Rect(50, y_pos, 500, 30)
         draw_rounded_rect(screen, (25, 30, 45), temp_box, 8)
-        text2 = font_small.render(f"🌡️  Temperatur: {globalTemp:.2f} °C", True, temp_color)
+        text2 = font_small.render(f"Temperatur: {globalTemp:.2f} °C", True, temp_color)
         screen.blit(text2, (60, y_pos + 3))
         
         # Meeresspiegel
@@ -272,14 +272,14 @@ def starten_gui():
         sea_color = berechne_farbe(seaLevel, 0, 1)
         sea_box = pygame.Rect(50, y_pos, 500, 30)
         draw_rounded_rect(screen, (25, 30, 45), sea_box, 8)
-        text3 = font_small.render(f"🌊  Meeresspiegel: {seaLevel:.2f} m", True, sea_color)
+        text3 = font_small.render(f"Meeresspiegel: {seaLevel:.2f} m", True, sea_color)
         screen.blit(text3, (60, y_pos + 3))
         
         # Todesfälle
         y_pos += 40
         deaths_box = pygame.Rect(50, y_pos, 500, 30)
         draw_rounded_rect(screen, (25, 30, 45), deaths_box, 8)
-        text4 = font_small.render(f"💀  Todesfälle: {deaths:,}", True, (255, 100, 100))
+        text4 = font_small.render(f"Todesfälle: {deaths:,}", True, (255, 100, 100))
         screen.blit(text4, (60, y_pos + 3))
         
         # Events Panel
@@ -297,7 +297,7 @@ def starten_gui():
             if is_recent:
                 # Recent events in bright cyan/yellow
                 event_color = (255, 220, 80)
-                prefix = "▶ "
+                prefix = "> "
             else:
                 # Old events in darker gray
                 event_color = (150, 150, 150)
@@ -316,7 +316,7 @@ def starten_gui():
             draw_rounded_rect(screen, (80, 20, 20), status_box)
             pygame.draw.rect(screen, (200, 50, 50), status_box, 3, border_radius=15)
             
-            text5 = font_medium.render("🔥 WELTUNTERGANG! 🔥", True, (255, 200, 200))
+            text5 = font_medium.render("WELTUNTERGANG!", True, (255, 200, 200))
             screen.blit(text5, (700, 180))
             
             try:
@@ -329,8 +329,8 @@ def starten_gui():
             draw_rounded_rect(screen, (35, 45, 65), status_box)
             pygame.draw.rect(screen, (80, 90, 110), status_box, 3, border_radius=15)
             
-            text5 = font_medium.render("⏸️  Bereit für nächsten Schritt", True, (150, 255, 150))
-            text6 = font_small.render("Drücke ENTER ⏎", True, (200, 200, 200))
+            text5 = font_medium.render("Bereit für nächsten Schritt", True, (150, 255, 150))
+            text6 = font_small.render("Drücke ENTER ", True, (200, 200, 200))
             screen.blit(text5, (640, 170))
             screen.blit(text6, (750, 220))
 
