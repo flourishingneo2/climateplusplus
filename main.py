@@ -130,16 +130,10 @@ class Simulation:
                     
                 else:
                     break
-            # # Recalculate probability based on current conditions
-            # listOfEvents[i].propability = listOfEvents[i].calculatePropability(
-            #     listOfEvents[i].weighting1,
-            #     listOfEvents[i].weighting2,
-            #     listOfEvents[i].weighting3
-            # )
+            
             if len(listOfEvents[i].theStack) > 0:
                 triggered_events.append(listOfEvents[i].theStack[-1])
             listOfEvents[i].theStack.clear()
-
 
         for event in triggered_events:
             event.trigger()
@@ -172,6 +166,48 @@ def draw_rounded_rect(surface, color, rect, radius=15):
     """Draw a rounded rectangle"""
     pygame.draw.rect(surface, color, rect, border_radius=radius)
 
+def wrap_text(text, font, max_width):
+    """Wrap text to fit within max_width, returning list of lines"""
+    # First, split by newline characters to respect manual line breaks
+    manual_lines = text.split('\n')
+    all_lines = []
+    
+    for manual_line in manual_lines:
+        words = manual_line.split(' ')
+        current_line = []
+        
+        for word in words:
+            # Check if adding this word would exceed max_width
+            test_line = ' '.join(current_line + [word]) if current_line else word
+            test_surface = font.render(test_line, True, (255, 255, 255))
+            
+            if test_surface.get_width() <= max_width:
+                current_line.append(word)
+            else:
+                # If current_line has words, save it and start new line
+                if current_line:
+                    all_lines.append(' '.join(current_line))
+                    current_line = [word]
+                else:
+                    # Single word is too long, break it by characters
+                    if len(word) > 0:
+                        char_line = ""
+                        for char in word:
+                            test_char_line = char_line + char
+                            if font.render(test_char_line, True, (255, 255, 255)).get_width() <= max_width:
+                                char_line += char
+                            else:
+                                if char_line:
+                                    all_lines.append(char_line)
+                                char_line = char
+                        if char_line:
+                            current_line = [char_line]
+        
+        if current_line:
+            all_lines.append(' '.join(current_line))
+    
+    return all_lines
+
 # --- Simulation Schritt ---
 def simulation_step():
     global events
@@ -195,6 +231,7 @@ def starten_gui():
     font_large = pygame.font.Font(None, 48)
     font_medium = pygame.font.Font(None, 36)
     font_small = pygame.font.Font(None, 24)
+    font_tiny = pygame.font.Font(None, 16)
     
     running = True
     events_log = []  # List of tuples: (event_text, is_recent)
@@ -291,8 +328,13 @@ def starten_gui():
         events_title = font_medium.render("Ereignisse", True, (200, 200, 200))
         screen.blit(events_title, (50, 400))
         
-        # Ereignisse anzeigen
+        # Ereignisse anzeigen mit dynamischem Zeilenabstand
         y_offset = 450
+        max_event_width = 1080  # Maximum width for event text (reduced to ensure padding)
+        line_height = 25  # Height per line of text
+        base_spacing = 12  # Extra spacing between events
+        panel_bottom = 650  # Bottom boundary of the events panel
+        
         for i, (e, is_recent) in enumerate(events_log):
             if is_recent:
                 # Recent events in bright cyan/yellow
@@ -303,12 +345,35 @@ def starten_gui():
                 event_color = (150, 150, 150)
                 prefix = "  "
             
-            event_text = font_small.render(f"{prefix}{e}", True, event_color)
-            screen.blit(event_text, (60, y_offset))
-            y_offset += 64
+            # Wrap the text into multiple lines if needed
+            full_text = f"{prefix}{e}"
+            wrapped_lines = wrap_text(full_text, font_tiny, max_event_width)
             
-            if y_offset > 640:  # Don't overflow the panel
+            # If no lines were created, skip this event
+            if not wrapped_lines:
+                continue
+            
+            # Calculate total height needed for this entire event (all lines + spacing after)
+            total_lines_height = len(wrapped_lines) * line_height
+            event_total_height = total_lines_height + base_spacing
+            
+            # Check if this entire event will fit in remaining space
+            if y_offset + event_total_height > panel_bottom:
+                # If this event won't fit entirely, show indicator and stop
+                if y_offset + 25 <= panel_bottom:  # Only show if there's space for indicator
+                    more_text = font_tiny.render("... (weitere Ereignisse)", True, (180, 180, 180))
+                    screen.blit(more_text, (60, y_offset))
                 break
+            
+            # Render each line of this event
+            current_y = y_offset
+            for line_idx, line in enumerate(wrapped_lines):
+                event_text = font_tiny.render(line, True, event_color)
+                screen.blit(event_text, (60, current_y))
+                current_y += line_height  # Move down for next line
+            
+            # Update y_offset to after this complete event (including spacing)
+            y_offset = current_y + base_spacing
         
         # Instructions/Status
         if weltuntergang:

@@ -2,7 +2,7 @@
 
 {
     "name": "Saeureregen",
-    "descr": "Saeureregen tritt auf! Wasser und Sauerstoff in der Atmosphaere verbinden sich vermehrt mit Schwefeloxiden\nund Stickoxiden und fallen als Regen nieder. Diese Art an Regen stoert die Ausgeglichenheit der Naturboeden und toetet dadurch Pflanzen.",
+    "descr": "Saeureregen tritt auf! Wasser und Sauerstoff in der Atmosphaere verbinden sich vermehrt mit Schwefeloxiden\nund Stickoxiden und fallen als Regen nieder. Diese Art an Regen stoert die Ausgeglichenheit der Naturboeden \nund toetet dadurch Pflanzen.",
     "change": {
         "deaths": 100,
         "globalTemp": 0,
@@ -47,7 +47,7 @@
 },
 {
     "name": "Ueberschwemmung",
-    "descr": "Ueberflutungen bedrohen vermehrt Menschenleben! Durch die steigenden Meeresspiegel und mehr \nExtremwetterereignisse sorgen fuer das starke Anschwellen von Fluesse. Es kommt zu Ueberflutungen, die die Lebensraeume von Mensch und Tier beschaedigen oder gar komplett zerstoeren. Es kommt zu Oekosystemverlusten.",
+    "descr": "Ueberflutungen bedrohen vermehrt Menschenleben! Durch die steigenden Meeresspiegel und mehr \nExtremwetterereignisse sorgen fuer das starke Anschwellen von Fluesse. Es kommt zu Ueberflutungen, die die Lebensraeume \nvon Mensch und Tier beschaedigen oder gar komplett zerstoeren. Es kommt zu Oekosystemverlusten.",
     "change": {
         "deaths": 200,
         "globalTemp": 0,
