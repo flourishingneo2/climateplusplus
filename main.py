@@ -194,7 +194,7 @@ def starten_gui():
     # Fonts
     font_large = pygame.font.Font(None, 48)
     font_medium = pygame.font.Font(None, 36)
-    font_small = pygame.font.Font(None, 28)
+    font_small = pygame.font.Font(None, 24)
     
     running = True
     events_log = []  # List of tuples: (event_text, is_recent)
