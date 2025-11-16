@@ -2,7 +2,7 @@
     
 {
             "name": "Saeureregen",
-            "descr": ,
+            "descr": "Saeureregen",
             "change": {
                 "deaths": 100,
                 "globalTemp": 0,
@@ -19,7 +19,7 @@
     {
 
             "name": "Gletscherschmelzung",
-            "descr": ,
+            "descr": "Gletscherschmelzung",
             "change": {
                 "deaths": 5,
                 "globalTemp": 0.05,
@@ -36,7 +36,7 @@
     {
 
             "name": "Waldbrand",
-            "descr": ,
+            "descr": "Waldbrand",
             "change": {
                 "deaths": 50,
                 "globalTemp": 0.01,
@@ -53,7 +53,7 @@
     {
    
             "name": "Ueberschwemmung",
-            "descr": ,
+            "descr": "Waldbrand",
             "change": {
                 "deaths": 200,
                 "globalTemp": 0,
@@ -70,7 +70,7 @@
     {
 
             "name": "Duerre",
-            "descr": ,
+            "descr": "Duerre",
             "change": {
                 "deaths": 150,
                 "globalTemp": 0,
@@ -87,7 +87,7 @@
     {
 
             "name": "Permafrostbodenaufsprengungen",
-            "descr": ,
+            "descr": "Permafrostbodenaufsprengungen",
             "change": {
                 "deaths": 5,
                 "globalTemp": 0.03,
