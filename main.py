@@ -126,16 +126,26 @@ class Simulation:
         triggered_events = []
         
         for i in range(len(listOfEvents)):
-            # Recalculate probability based on current conditions
-            listOfEvents[i].propability = listOfEvents[i].calculatePropability(
+            while True:
+                # Recalculate probability based on current conditions
+                listOfEvents[i].propability = listOfEvents[i].calculatePropability(
                 listOfEvents[i].weighting1,
                 listOfEvents[i].weighting2,
                 listOfEvents[i].weighting3
-            )
+                )
+                if listOfEvents[i].propabilityCheck(listOfEvents[i].propability):
+                    triggered_events.append(listOfEvents[i])
+                else:
+                    break
+            # # Recalculate probability based on current conditions
+            # listOfEvents[i].propability = listOfEvents[i].calculatePropability(
+            #     listOfEvents[i].weighting1,
+            #     listOfEvents[i].weighting2,
+            #     listOfEvents[i].weighting3
+            # )
             
             # Check if event should trigger
-            if listOfEvents[i].propabilityCheck(listOfEvents[i].propability):
-                triggered_events.append(listOfEvents[i])
+            
         
         # Only trigger each event once
         for event in triggered_events:
