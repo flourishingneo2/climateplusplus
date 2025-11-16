@@ -42,21 +42,41 @@ class climateEvent:
         self.change3 = 0
         self.change4 = 0
 
+    def get_random_value(self, change_value):
+        """Get a random value from array range or return 0 if value is 0"""
+        if isinstance(change_value, list):
+            # If it's an array, return random value between min and max
+            return random.uniform(change_value[0], change_value[1])
+        elif change_value == 0:
+            # If it's 0, return 0 (no change)
+            return 0
+        else:
+            # If it's a single value, return it as is
+            return change_value
+
     def effects(self, change1, change2, change3, change4, eventText):
         global globalTemp, ggc, seaLevel, deaths, events
         
-        globalTemp += change1
-        ggc += change2
-        seaLevel += change3
-        deaths += change4
+        # Get random values for each parameter
+        actual_change1 = self.get_random_value(change1)
+        actual_change2 = self.get_random_value(change2)
+        actual_change3 = self.get_random_value(change3)
+        actual_change4 = self.get_random_value(change4)
+        
+        # Apply changes
+        globalTemp += actual_change1
+        ggc += actual_change2
+        seaLevel += actual_change3
+        deaths += int(actual_change4)
         
         print("\n\n")
         print(eventText)
+        print(f"  ΔTemp: {actual_change1:.3f}°C, ΔGGC: {actual_change2:.2f} ppm, ΔSea: {actual_change3:.4f} m, ΔDeaths: {int(actual_change4)}")
         print("\n")
         
         if self.name == "Saeureregen":
             events.append("Säureregen tritt auf! Wasser und Sauerstoff in der Atmosphäre verbinden sich vermehrt mit Schwefeloxiden und Stickoxiden und fallen als Regen nieder.")
-        elif self.name == "Gletcherschmelzung":
+        elif self.name == "Gletscherschmelzung":
             events.append("Gletscher schmelzen so stark ab wie noch nie! Die globale Erderwärmung bringt immer mehr Gletscher zum kompletten Abschmelzen.")
         elif self.name == "Waldbrand":
             events.append("Starke Waldbrände breiten sich aus!")
@@ -137,15 +157,6 @@ class Simulation:
                     triggered_events.append(listOfEvents[i])
                 else:
                     break
-            # # Recalculate probability based on current conditions
-            # listOfEvents[i].propability = listOfEvents[i].calculatePropability(
-            #     listOfEvents[i].weighting1,
-            #     listOfEvents[i].weighting2,
-            #     listOfEvents[i].weighting3
-            # )
-            
-            # Check if event should trigger
-            
         
         # Only trigger each event once
         for event in triggered_events:
